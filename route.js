@@ -67,6 +67,27 @@ router.get('/',(req,res)=>{
   }
  });
 
+ router.get('/selectdistinct/:key/:tagname',(req,res)=>{
+  key=req.params['key']
+  if(key==process.env.key) {
+  tag=req.params['tagname']
+  let tablename=req.query.table;
+  let sql = "select distinct "+tag+" from "+process.env.database+"."+tablename;
+  con.query(sql,function (err, result) {
+    if (err)  console.log(err);
+    res.send(result);
+    res.end();
+  });
+  
+  }
+  else{
+    res.send("You are not authorized");
+    res.end();
+  }
+  
+  
+ });
+
  router.get('/insert/:key/:datas/:values',(req,res)=>{
   key=req.params['key']
   if(key==process.env.key) {
@@ -77,7 +98,9 @@ router.get('/',(req,res)=>{
   let str;
   let str2;
   var i1=arr.length;
+  console.log(i1);
   var i2=arr2.length;
+  console.log(arr);
   let tablename=req.query.table;
   arr2.forEach(element=>{
       if(i2!=1){
