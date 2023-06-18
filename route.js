@@ -88,6 +88,30 @@ router.get('/',(req,res)=>{
   
  });
 
+
+ router.get('/selectbetween/:key/:tagname/:data1/:data2',(req,res)=>{
+  key=req.params['key']
+  if(key==process.env.key) {
+  data1=req.params['data1']
+  data2=req.params['data2']
+  tagname=req.params['tagname']
+  let tablename=req.query.table;
+  let sql = "select * from "+process.env.database+"."+tablename+" where "+tagname+" between "+data1+" and "+data2;
+  con.query(sql,function (err, result) { 
+    if (err)  console.log(err);
+    res.send(result);
+    res.end();
+  });
+  
+  }
+  else{
+    res.send("You are not authorized");
+    res.end();
+  }
+  
+  
+ });
+
  router.get('/insert/:key/:datas/:values',(req,res)=>{
   key=req.params['key']
   if(key==process.env.key) {
